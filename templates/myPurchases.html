@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    My Purchases
+{% endblock %}
+
+{% block content %}
+
+    {% if purchases == [] %}
+        <h3 class="text-center mt-5"> No Purchases Found!</h3>
+    {% else %}
+    <div class = "w-75 ms-auto me-auto mt-4 mb-5 d-flex flex-wrap">
+
+            {% for pur in purchases %}
+            <div class="card m-3" style="width: 18rem;">
+                  <img src="{% if pur.img %} {{ url_for('static', filename='/uploads/'+ pur.img ) }} {% else %} {{ url_for('static', filename='/images/no-image.jpg' ) }} {% endif %}" class="card-img-top" alt="{{pur.name}}"/>
+                  <div class="card-body">
+                    <h5 class="card-title">{{ pur.name }}</h5>
+                    <p class="card-text">{{ pur.description }}
+                    <br>
+                    <small class="text-muted">
+                        {{ pur.created_at }}
+                    </small>
+                    </p>
+                  </div>
+                  <ul class="list-group list-group-flush">
+                        <li class="list-group-item">category: {{ pur.category }}</li>
+                        <li class="list-group-item">min price: &#36;{{ pur.min_price }}</li>
+                        <li class="list-group-item">
+                           price: &#36;{{ pur.price }}
+                        </li>
+                        <li class="list-group-item">
+                           Bought At: <small>"{{ pur.bought_at }}" </small>
+                        </li>
+
+                  </ul>
+            </div>
+            {% endfor %}
+
+    </div>
+    {% endif %}
+
+{% endblock %}

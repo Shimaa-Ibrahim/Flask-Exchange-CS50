@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Sign Up
+{% endblock %}
+
+{% block content %}
+    <form action="/signup" method="post" enctype = "multipart/form-data">
+        <div class = "w-25 ms-auto me-auto mt-5">
+            <div class="mb-3">
+                    <input autocomplete="off" autofocus class="form-control" name="username" placeholder="Username" type="text">
+            </div>
+            <div class="mb-3">
+                    <input autocomplete="off" autofocus class="form-control" name="fname" placeholder="First Name" type="text">
+            </div>
+            <div class="mb-3">
+                    <input autocomplete="off" autofocus class="form-control" name="lname" placeholder="Last Name" type="text">
+            </div>
+            <div class= "mb-3">
+                    <input class="form-control" name="password" placeholder="Password" type="password">
+            </div>
+            <div class= "mb-3">
+                    <input class="form-control" name="confirmation" placeholder="Confirm Password" type="password">
+            </div>
+            <div class= "mb-3">
+                    <input class="form-control" name="file" placeholder="upload your photo" type="file" accept="image/*">
+            </div>
+            <div class="text-center">
+                <button class="btn btn-primary " type="submit">Sign Up</button>
+            </div>
+        </div>
+    </form>
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+
+{% block style %}
+    <link href="/static/css/styles.css" rel="stylesheet">
+{% endblock %}
+{% block title %}
+    HOME
+{% endblock %}
+
+{% block content %}
+
+        <div id="heading">
+            <div class="col-md-12 text-center">
+                <h1>Buy and Sell Online </h1>
+
+                <p id="intro">
+                   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus dictum quis magna consequat finibus. Nunc ullamcorper velit vel velit tincidunt,
+                   nec eleifend velit consectetur. Curabitur maximus lacinia ante. Morbi eget tempus risus, bibendum ultricies elit. Aliquam erat volutpat.
+                   Integer finibus faucibus mauris nec interdum.
+                </p>
+
+                {% if not session.user_id %}
+                    <a href="/signup" class="btn btn-primary mt-4 mb-2"> Sign Up Now! </a>
+                    <br>
+                    <small> Have Account Already!</small>
+                    <a href="/login" class="link-primary">Log In </a>
+                {% endif %}
+
+            </div>
+        </div>
+
+        <div>
+
+        </div>
+
+{% endblock %}

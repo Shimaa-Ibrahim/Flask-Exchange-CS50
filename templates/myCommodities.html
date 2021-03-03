@@ -1,0 +1,53 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    My Commodities
+{% endblock %}
+
+{% block content %}
+
+    {% if commodities == [] %}
+        <h3 class="text-center"> No Commodities Found!</h3>
+    {% else %}
+    <div class = "w-75 ms-auto me-auto my-4 d-flex flex-wrap">
+
+            {% for com in commodities %}
+            <div class="card m-3" style="width: 18rem;">
+                  <img src="{% if com.img %} {{ url_for('static', filename='/uploads/'+ com.img ) }} {% else %} {{ url_for('static', filename='/images/no-image.jpg' ) }} {% endif %}" class="card-img-top" alt="{{com.name}}"/>
+                  <div class="card-body">
+                    <h5 class="card-title">{{ com.name }}</h5>
+                    <p class="card-text">{{ com.description }}
+                    <br>
+                    <small class="text-muted">
+                        {{ com.created_at }}
+                    </small>
+                    </p>
+                  </div>
+                  <ul class="list-group list-group-flush">
+                        <li class="list-group-item">category: {{ com.category }}</li>
+                        <li class="list-group-item">min price: &#36;{{ com.min_price }}</li>
+
+                        {% if com.buyer_id is not none %}
+                            <li class="list-group-item">
+                               price: &#36;{{ com.price }} <small>"{{ "  "+ com.bought_at }}" </small>
+                            </li>
+                        {% else %}
+                            <li class="list-group-item" >  sold : Not Yet! </li>
+                        {% endif %}
+
+                  </ul>
+                  <div class="card-body text-center">
+                     {% if com.buyer_id is not none %}
+                        <button type="button" class="btn btn-success" disabled>SOLD</button>
+                    {% else %}
+                            <a href="/commodity-details/{{ com.id }}" class="btn btn-primary">Auction</a>
+                            <a href="/delete/{{com.id}}/{{com.seller_id}}" class="btn btn-danger">Delete</a>
+                    {% endif %}
+                    </div>
+            </div>
+            {% endfor %}
+
+    </div>
+    {% endif %}
+
+{% endblock %}

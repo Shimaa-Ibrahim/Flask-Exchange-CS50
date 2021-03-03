@@ -1,0 +1,6 @@
+database tables:
+
+CREATE TABLE users (id INTEGER,username VARCHAR(32) not null UNIQUE, password text not null, fname username VARCHAR(32) not null, lname username VARCHAR(32) not null, imgURL text,PRIMARY KEY(id));
+CREATE TABLE categories(id integer, name varchar(60) not null unique, primary key(id));
+CREATE TABLE commodities(id integer, name VARCHAR(55), seller_id integer not null, min_price real not null,img text, buyer_id integer, price real, description text, category_id, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, bought_at TIMESTAMP, primary key(id), FOREIGN KEY(seller_id) REFERENCES users(id), FOREIGN KEY(buyer_id) REFERENCES users(id), FOREIGN KEY(category_id) REFERENCES categories(id));
+CREATE TABLE Auctions(user_id integer, commodity_id integer, price real, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, primary key(user_id, commodity_id), FOREIGN KEY(user_id) REFERENCES users(id), FOREIGN KEY(commodity_id) REFERENCES commodities(id));

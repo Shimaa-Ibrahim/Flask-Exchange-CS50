@@ -1,0 +1,111 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    {{ Commodity.name|capitalize }} Details
+{% endblock %}
+
+{% block content %}
+    {% if not bids %}
+        {% if session.user_id  == Commodity.seller_id %}
+            <div class="bg-light mb-4 mt-0">
+                <h4 class="text-center py-4 text-danger">No Bids Till Now!</h4>
+            </div>
+        {% else %}
+            <div class="bg-light mb-4 mt-0">
+                <h4 class="text-center py-4 text-danger">Be the first one to bid!</h4>
+            </div>
+        {% endif %}
+    {% endif %}
+
+    <div class="card border-0 light m-3">
+      <div class="row g-0">
+        <div class="col-md-3">
+          <img
+            src="{% if Commodity.img %} {{ url_for('static', filename='/uploads/'+ Commodity.img ) }} {% else %} {{ url_for('static', filename='/images/no-image.jpg' ) }} {% endif %}" class="card-img-top" alt="{{Commodity.name}}"
+            class="img-fluid"
+          />
+        </div>
+        <div class="col-md-8">
+          <div class="card-body">
+            <h4 class="card-title mb-3">{{Commodity.name|capitalize}}</h4>
+            <p class="card-text">
+                <span class="text-muted">Category: </span>{{Commodity.category|capitalize }}
+                <br>
+                <span class="text-muted">Minimum Price: </span>{{Commodity.min_price }}
+            <br>
+            <span class="text-muted">Seller: </span>{{Commodity.seller }}
+            </p>
+            <p class="card-text"> {{Commodity.description }} </p>
+            <p class="card-text">
+              <small class="text-muted">{{Commodity.created_at }}</small>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {% if bids %}
+        <div class = "mx-3 row mt-4">
+            {% for bid in bids %}
+                <div class="card m-3 col-3" style="max-width: 540px;">
+                  <div class="row g-0">
+                    <div class="col-md-4">
+                      <img src="{% if bid.imgURL %} {{ url_for('static', filename='/uploads/'+ bid.imgURL ) }} {% else %} {{ url_for('static', filename='/images/user.png' ) }} {% endif %}" class="card-img-top rounded-circle" alt="{{bid.bidder}}">
+                    </div>
+                    <div class="col-md-8">
+                      <div class="card-body">
+                        <p class="card-text">
+                            <span class="text-muted"> BIDDER: </span>{{bid.bidder|capitalize }}
+                            <br>
+                            <span class="text-muted">Price: </span>{{bid.price }}
+                            <br>
+                            <small class="text-muted">{{ bid.created_at }}</small>
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                   {% if session.user_id  == Commodity.seller_id %}
+                       <div class="row g-0">
+                           <form action="/sell-commodity" method="post">
+                                <input name="bid" type="hidden" value="{{ bid }}">
+                                <input name="seller_id" type="hidden" value="{{ Commodity.seller_id }}">
+                                <button class="btn btn-primary px-2 mb-2 w-100" onclick="return confirm('Are you sure?')" type="submit">SELL</button>
+                           </form>
+                        </div>
+                    {% endif%}
+
+                    {% if session.user_id  == bid.user_id %}
+                       <div class="row g-0">
+                            <a href="/delete-bid/{{ bid.commodity_id }}/{{ bid.user_id }}" class="btn btn-primary px-2 mb-2 w-100" onclick="return confirm('Are you sure?')">Delete</a>
+                        </div>
+                    {% endif%}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {% if session.user_id  != Commodity.seller_id %}
+
+    <div class="w-50 mx-auto text-center m-4 my-5 border border-Secondary border-2">
+        <h4 class="text-center my-3 text-danger">bid Now!</h4>
+        <form  action="/bid" method="post">
+             <div class = "w-75 ms-auto me-auto form-floating">
+                <div class="mb-3 w-50 mx-auto">
+                    <input autocomplete="off" autofocus class="form-control" name="pirce" placeholder="Offer a price ..." type="number" min="0" step="0.01">
+                    <input value="{{ Commodity.id }}" name="id" type="hidden">
+                </div>
+                <div class="text-center">
+                    <button class="btn btn-primary " type="submit">Bid</button>
+                </div>
+                <div class="text-center mt-2 mb-3">
+                    <small class="text-muted">Note: if you bid before it will be updated automatically!</small>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    {% endif %}
+
+    <br><br><br>
+
+{% endblock %}

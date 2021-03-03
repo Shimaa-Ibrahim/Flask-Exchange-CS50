@@ -1,0 +1,56 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Buy Commodities
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid mb-5">
+        <div class="row">
+            <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+              <div class="position-sticky pt-3">
+                 <h6 class = "sidebar-heading d-flex justify-content-between align-items-center px-3 mb-1 text-muted"> CATEGORIES </h6>
+                <ul class="nav flex-column">
+                    {% for cat in categories %}
+                      <li class="nav-item">
+                        <a class="nav-link" {% if cat.id == category_id %}style="color: #292b2c; font-weight:bold;" {% endif %} aria-current="page" href="/buy/{{cat.id}}">
+                          <small>{{ cat.name }} </small>
+                        </a>
+                      </li>
+                  {% endfor %}
+                </ul>
+              </div>
+            </nav>
+             {% if commodities == [] %}
+             <div class= "col-md-9 ms-sm-auto col-lg-10 px-md-4 mt-5 text-center">
+                 <h3 class=""> No Commodities Found!</h3>
+             </div>
+            {% else %}
+                <div class = "w-75 ms-auto me-auto d-flex flex-wrap mt-4">
+                    {% for com in commodities %}
+                    <div class="card m-3" style="width: 18rem;">
+                          <img src="{% if com.img %} {{ url_for('static', filename='/uploads/'+ com.img ) }} {% else %} {{ url_for('static', filename='/images/no-image.jpg' ) }} {% endif %}" class="card-img-top" alt="{{com.name}}">
+                          <div class="card-body">
+                            <h5 class="card-title">{{ com.name }}</h5>
+                            <p class="card-text">{{ com.description }}</p>
+                            <br>
+                            <small class="text-muted">
+                                {{ com.created_at }}
+                            </small>
+                          </div>
+                          <ul class="list-group list-group-flush">
+                                <li class="list-group-item">category: {{ com.category }}</li>
+                                <li class="list-group-item">min price: &#36;{{ com.min_price }}</li>
+                          </ul>
+                          <div class="card-body text-center">
+                                <a href="/commodity-details/{{ com.id }}" class="btn btn-primary stretched-link px-2">Bid</a>
+                            </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            </div>
+        </div>
+
+
+{% endblock %}
